@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+<h3>Update Task</h3>
+<form action="" method="post">
+{% csrf_token %}
+    {{form | crispy}}
+    <input type="submit" class="btn btn-secondary btn-sm" value="Update">
+    <input type="submit"  class="btn btn-secondary btn-sm" onclick="window.location='{% url 'tasks:create_and_list' %}'; return false;" value="Cancel">
+</form>
+{% endblock %}

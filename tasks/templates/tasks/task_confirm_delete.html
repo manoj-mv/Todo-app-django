@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+<p>Are you sure you want to delete "{{task.title}}"?</p>
+<form action="" method="post">
+    {% csrf_token %}
+    <input type="submit" class="btn btn-danger btn-sm" value="Confirm">
+    <input type="submit" class="btn btn-secondary btn-sm" onclick="window.location='{% url 'tasks:create_and_list' %}'; return false;" value="Cancel">
+
+</form>
+{% endblock %}
