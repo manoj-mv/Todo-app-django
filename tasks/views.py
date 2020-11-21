@@ -20,7 +20,7 @@ class CreateTask_and_list(CreateView):
     # additional context for listing all tasks
     def get_context_data(self,*args, **kwargs):
         context = super().get_context_data(*args,**kwargs)
-        context["task_list"] = self.model.objects.all()
+        context["task_list"] = self.model.objects.all().order_by('-created_at')
         return context
 
 class updateTask(UpdateView):
@@ -31,7 +31,7 @@ class updateTask(UpdateView):
 class deleteTask(DeleteView):
     model=task
     success_url=reverse_lazy('tasks:create_and_list')
-    
+
 
 
 

@@ -22,18 +22,18 @@
             {% if task.complete == True %}
                <strike>{{task.title}}</strike>
             {%else%}
-                {{task.title}}           
+                {{task.title}}
             {% endif %}
         </div>
         <div class="col-12 col-sm-3 bg-light">
-            <a class="btn btn-secondary btn-sm float-right ml-2" href="{% url 'tasks:task_update' task.id %}">Update</a>
+            <a class="btn btn-secondary btn-sm float-right ml-2 mb-2u b" href="{% url 'tasks:task_update' task.id %}">Update</a>
             &nbsp&nbsp
             <a class="btn btn-danger btn-sm float-right" href="{% url 'tasks:task_delete' task.id %}">Delete</a>
         </div>
-    
+
         <br>
     </div>
     {% endfor %}
-    
+
 
 {% endblock content %}
