@@ -1,27 +1,39 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
 {% block content %}
-
-<div >
-<form action="" method="post">
-    {% csrf_token %}
-    {{ form |crispy }}
-    <input type="submit" class="btn btn-secondary" value="Add Task">
-</form>
-<br>
-{% for task in task_list %}
-    <div class="r_ef">
-        {% if task.complete == True %}
-           <strike>{{task.title}}</strike>
-        {%else%}
-            {{task.title}}           
-        {% endif %}
-        <a class="btn btn-secondary btn-sm float-right ml-2" href="{% url 'tasks:task_update' task.id %}">Update</a>
-        &nbsp&nbsp
-        <a class="btn btn-danger btn-sm float-right" href="{% url 'tasks:task_delete' task.id %}">Delete</a>
-    
+<div class="row justify-content-center mt-5">
+    <div class="col-12 col-sm-6">
+            <form action="" method="post">
+                {% csrf_token %}
+                {{ form |crispy }}
     </div>
-    <br>
-{% endfor %}
 </div>
+<div class="row justify-content-center mb-4">
+    <div class="col-auto col-sm-6">
+                <input type="submit" class="btn btn-secondary" value="Add Task">
+                <hr>
+    </div>
+</form>
+</div>
+
+{% for task in task_list %}
+<div class="row justify-content-center mt-3 mb-3 ">
+        <div class="col-12 col-sm-3 bg-light">
+            {% if task.complete == True %}
+               <strike>{{task.title}}</strike>
+            {%else%}
+                {{task.title}}           
+            {% endif %}
+        </div>
+        <div class="col-12 col-sm-3 bg-light">
+            <a class="btn btn-secondary btn-sm float-right ml-2" href="{% url 'tasks:task_update' task.id %}">Update</a>
+            &nbsp&nbsp
+            <a class="btn btn-danger btn-sm float-right" href="{% url 'tasks:task_delete' task.id %}">Delete</a>
+        </div>
+    
+        <br>
+    </div>
+    {% endfor %}
+    
+
 {% endblock content %}
