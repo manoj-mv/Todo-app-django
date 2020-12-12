@@ -17,23 +17,89 @@
 </div>
 
 {% for task in task_list %}
-<div class="row justify-content-center mt-3 mb-3 ">
+<div class="row justify-content-center mt-3 mb-2 p-2">
         <div class="col-12 col-sm-3 bg-light">
             {% if task.complete == True %}
-               <strike>{{task.title}}</strike>
+                <p id='action_text_{{task.id}}' style="text-decoration-line:line-through">{{task.title}}</p>
             {%else%}
-                {{task.title}}
+                <p id='action_text_{{task.id}}' style="text-decoration-line:none">{{task.title}}</p>
             {% endif %}
         </div>
-        <div class="col-12 col-sm-3 bg-light">
-            <a class="btn btn-secondary btn-sm float-right ml-2 mb-2u b" href="{% url 'tasks:task_update' task.id %}">Update</a>
-            &nbsp&nbsp
-            <a class="btn btn-danger btn-sm float-right" href="{% url 'tasks:task_delete' task.id %}">Delete</a>
+        <div class="col-12 col-sm-5 bg-light">
+            <div class="row align-self-center">
+                <div class="col text-center">
+                    <span class=" fa-2x success_icon" onclick="testComplete( '{% url 'tasks:task_incomplete' task.id %}', {{task.id}},'action_text_{{task.id}}' );return false;"
+                    {% if task.complete == False %} style="display:none" {% endif %} 
+                    id = 'completed_task_{{task.id}}'
+                    >
+                    <!--  <i class="fa fa-check-circle-o  fa-stack-1x"  style="display:none;" ></i> -->
+                    <i class="fa fa-check-circle fa-stack-1x" style="color:green"></i>
+                    </span>
+                
+                    <span class=" fa-2x success_icon" onclick="testComplete('{% url 'tasks:task_complete' task.id %}', {{task.id}},'action_text_{{task.id}}' );return false;"
+                    {% if task.complete == True %} style="display:none" {% endif %}
+                    id = 'incompleted_task_{{task.id}}'
+                    >
+                    <i class="fa fa-check-circle-o  fa-stack-1x"  ></i>
+                    <!-- <i class="fa fa-check-circle fa-stack-1x"></i> -->
+                    </span>
+               
+                </div>
+                    
+                <div class="col my-auto text-center">
+                <a href="{% url 'tasks:task_update' task.id %}">
+                <span class="edit_icon mx-auto">
+                <i class="fa fa-edit edit_ico fa-2x float:right" style="color:#0275d8"></i> 
+                </span>
+                </a>
+                </div>
+                
+                <div class="col my-auto text-center">
+                    <a href="{% url 'tasks:task_delete' task.id %}">
+                    <span class="delete_icon mx-auto">
+                    <i class="fa fa-trash fa-color del_ico fa-2x "  aria-hidden="true"></i>
+                    </span>
+                    </a>
+                </div>
+               
+            </div>
         </div>
-
         <br>
     </div>
     {% endfor %}
+<script type="text/javascript">
 
-
+    function testComplete(url,task_id,action_text_id){
+        console.log('task',task_id);
+        console.log(url);
+        console.log('action_text_id:',action_text_id);
+        
+        action_text_el = $('#'+action_text_id);
+        console.log('action_text_style:',action_text_el.css('text-decoration-line'));
+        $.post(
+            url,
+            // {'csrfmiddlewaretoken' ='{{csrf_token}}'},
+            {'csrfmiddlewaretoken' : '{{ csrf_token }}'},
+            function(data,status){
+                if(status == 'success'){
+                    $('#completed_task_'+task_id).toggle();
+                    $('#incompleted_task_'+task_id).toggle();
+                    if(action_text_el.css('text-decoration-line') == "none" ){
+                        $('#'+action_text_id).css({'text-decoration-line':'line-through'});
+                        console.log('action_text_style:',action_text_el.css('text-decoration-line')); // to change css property
+                    }
+                    else{
+                        $('#'+action_text_id).css({'text-decoration-line':'none'});
+                        console.log('action_text_style:',action_text_el.css('text-decoration-line'));
+                    }
+                    
+                    console.log('success');
+                }
+            
+            }
+        );
+        
+        console.log('ok')
+    }
+</script>
 {% endblock content %}
